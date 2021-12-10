@@ -6,7 +6,7 @@
 
 ### 2. run this commands:
 ``` bash
-pip3 install -r requirements.txt ; python main.py
+pip3 install -r requirements.txt ; python master.py
 ```
 
 ### 3. If you want change settings edit consts if file [settings.py](https://github.com/githubVladimirT/Cardioid/blob/main/settings.py)

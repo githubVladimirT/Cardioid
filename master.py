@@ -60,11 +60,11 @@ class App:
             self.draw_main()
             for event in pg.event.get():
                 if event.type == pg.QUIT:
-                    log.write("\n[  OK  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S") + "  -  file: main.py")
+                    log.write("\n[  OK  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S") + "  -  file: master.py")
                     exit(0)
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_ESCAPE:
-                        log.write("\n[  OK  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S") + "  -  file: main.py")
+                        log.write("\n[  OK  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S") + "  -  file: master.py")
                         exit()
                     
                     if event.key == pg.K_q and pg.key.get_mods() & pg.KMOD_CTRL or event.key == pg.K_w and pg.key.get_mods() & pg.KMOD_CTRL:
@@ -92,13 +92,12 @@ if __name__ == '__main__':
             now = datetime.datetime.now()
             app = App()
             app.run()
-            log.write("\n[  OK  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S") + "  -  file: helper.py")
 
         except KeyboardInterrupt:
-            log.write("\n[  OK  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S") + "  -  file: main.py")
+            log.write("\n[  OK  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S") + "  -  file: master.py")
         except ModuleNotFoundError:
-            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + "Error: Module not found") + "  -  file: main.py")
+            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + "Error: Module not found") + "  -  file: master.py")
         except ImportError:
-            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + " Error: Import Error") + "  -  file: main.py")
+            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + " Error: Import Error") + "  -  file: master.py")
         except FileNotFoundError:
-            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + " Error: File not found. Maybe music file doesn't exist.") + "  -  file: main.py")
+            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + " Error: File not found. Maybe music file doesn't exist.") + "  -  file: master.py")
