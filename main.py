@@ -45,14 +45,17 @@ class App:
         self.cardioid = Cardioid(self)
 
     def draw_main(self):
-        self.screen.fill(settings.background_color)
-        pg.display.set_icon(pg.image.load("./img/icon_min.png"))
-        self.cardioid.draw()
 
+        self.screen.fill(settings.background_color)
+        pg.display.set_icon(pg.image.load("./assets/img/icon_min.png"))
+
+        self.cardioid.draw()
         pg.display.flip()
 
 
     def run(self):
+        if play:
+            pg.mixer.music.play()
         while True:
             self.draw_main()
             for event in pg.event.get():
@@ -71,12 +74,20 @@ class App:
 
 
 if __name__ == '__main__':
-    with open("main.log", "a") as log:
+    with open("./main.log", "a") as log:
         try:
             import pygame as pg
             import settings
             import datetime
             import math
+
+            pg.mixer.init()
+
+            play = False
+
+            if settings.path_to_music != None:
+                play = True
+                pg.mixer.music.load(settings.path_to_music)
             
             now = datetime.datetime.now()
             app = App()
@@ -86,6 +97,8 @@ if __name__ == '__main__':
         except KeyboardInterrupt:
             log.write("\n[  OK  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S") + "  -  file: main.py")
         except ModuleNotFoundError:
-            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + " Module not found") + "  -  file: main.py")
+            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + "Error: Module not found") + "  -  file: main.py")
         except ImportError:
-            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + " Import Error") + "  -  file: main.py")
+            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + " Error: Import Error") + "  -  file: main.py")
+        except FileNotFoundError:
+            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + " Error: File not found. Maybe music file doesn't exist.") + "  -  file: main.py")
