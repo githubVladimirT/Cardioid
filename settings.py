@@ -21,5 +21,5 @@ font = 'Areal'
 font_color = 'green'
 
 # Music
-# path_to_music = "./assets/music/main.mp3"
-path_to_music = None
+path_to_music = "./assets/music/main.mp3"
+# path_to_music = None

@@ -55,7 +55,7 @@ class App:
 
     def run(self):
         if play:
-            pg.mixer.music.play()
+            pg.mixer.music.play(-1)
         while True:
             self.draw_main()
             for event in pg.event.get():
