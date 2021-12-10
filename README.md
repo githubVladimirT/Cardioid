@@ -9,9 +9,15 @@
 # Check existence of command "gh". Because "gh clone" is faster then "git clone"
 if ! command -v gh &> /dev/null
 then
-	git clone https://github.com/githubVladimirT/Cardioid.git ; cd Cardioid ; pip3 install -r requirements.txt ; python3 master.py
+	git clone https://github.com/githubVladimirT/Cardioid.git # Clone repo
+	cd Cardioid # Change dirictory to cloned
+	pip3 install -r requirements.txt # Install or update modules
+	python3 master.py # Run Cardioid
 else
-	gh repo clone githubVladimirT/Cardioid ; cd Cardioid ; pip3 install -r requirements.txt ; python3 master.py
+	gh repo clone githubVladimirT/Cardioid # Clone repo
+	cd Cardioid # Change dirictory to cloned
+	pip3 install -r requirements.txt # Install or update modules
+	python3 master.py # Run Cardioid
 fi
 ```
 
