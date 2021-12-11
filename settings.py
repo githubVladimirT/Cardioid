@@ -16,9 +16,5 @@ monocolor_cardioid_color = 'green'
 multicolor_cardioid_color_1 = 'green'
 multicolor_cardioid_color_2 = 'black'
 
-# Font
-font = 'Areal'
-font_color = 'green'
-
 # Music
 path_to_music = "./assets/music/main.mp3"
