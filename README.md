@@ -2,9 +2,9 @@
 
 ## For run this application follow the instructions:
 
-### 1. install python (if you haven't already).
+### 1. Install python (if you haven't already).
 
-### 2. run this commands:
+### 2. Run this commands:
 ``` bash
 # Check existence of command "gh". Because "gh clone" is faster then "git clone"
 if ! command -v gh &> /dev/null
