@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# Created by: @githubVladimirT
+
 # Class: Cardioid drawing the cardioid on screen
 class Cardioid:
     def __init__(self, app, settings, pg, math):
