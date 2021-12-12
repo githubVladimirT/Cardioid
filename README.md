@@ -27,4 +27,4 @@ fi
 
 ### *. For add the background music add music file to assets/music/ and in file [settings.py](https://github.com/githubVladimirT/Cardioid/blob/main/settings.py) then paste path to file in the const "path_to_music" after char equals.
 
-### For exit from app hit 'ESC' or 'Ctrl+w' or 'Ctrl+q' or 'Alt+F4'
+### For exit from app hit 'ESC' or 'Ctrl+w' or 'Ctrl+q' or 'Alt+F4'.
