@@ -48,6 +48,7 @@ class App:
         self.settings = settings
         self.log = log
         self.now = now
+        
         self.screen = self.pg.display.set_mode(settings.screen_resolution, self.pg.FULLSCREEN)
         self.clock = pg.time.Clock()
         self.cardioid = Cardioid(self, self.settings, self.pg, self.math)
@@ -61,6 +62,8 @@ class App:
 
 
     def run(self):
+        volume = 0.5
+
         while True:
             self.draw_main()
             for event in self.pg.event.get():
@@ -75,6 +78,15 @@ class App:
                     if event.key == self.pg.K_q and self.pg.key.get_mods() & self.pg.KMOD_CTRL or event.key == self.pg.K_w and self.pg.key.get_mods() & self.pg.KMOD_CTRL:
                         exit()
 
+                    if self.settings.path_to_music != None:
+                        if event.key == self.pg.K_UP or event.key == self.pg.K_o:
+                            volume += 0.05
+                            self.pg.mixer.music.set_volume(volume)
+                        if event.key == self.pg.K_DOWN or event.key == self.pg.K_k:
+                            if volume != 0.0:
+                                volume -= 0.05
+                            self.pg.mixer.music.set_volume(volume)
+
             self.clock.tick(self.settings.fps)
 
 def music(settings, pg):
@@ -86,26 +98,36 @@ def music(settings, pg):
 def master():
     with open("./master.log", "a") as log:
         try:
+            from os import environ
+            environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
+
             import pygame as pg
             import settings
             import datetime
             import math
 
-            if settings.path_to_music != None:
-                music(settings, pg)
-
             now = datetime.datetime.now()
+
+            if settings.path_to_music != None:
+                try:
+                    music(settings, pg)
+                except:
+                    from colorama import Fore
+                    log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + " ; Error: Music file not found.") + "  -  file: master.py")
+                    print(Fore.RED + "\nError! For details open file master.log\n" + Fore.RESET)
+                    exit(1)
+
             app = App(pg, settings, log, now, math)
             app.run()
 
         except KeyboardInterrupt:
             log.write("\n[  OK  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S") + "  -  file: master.py")
         except ModuleNotFoundError:
-            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + "Error: Module not found") + "  -  file: master.py")
+            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + " ; Error: Module not found") + "  -  file: master.py")
         except ImportError:
-            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + " Error: Import Error") + "  -  file: master.py")
+            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + " ; Error: Import Error") + "  -  file: master.py")
         except FileNotFoundError:
-            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + " Error: File not found. Maybe music file doesn't exist.") + "  -  file: master.py")
+            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + " ; Error: File not found. Maybe music file doesn't exist.") + "  -  file: master.py")
 
 
 if __name__ == '__main__':

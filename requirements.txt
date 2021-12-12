@@ -1,4 +1,4 @@
 pygame
 datetime
 math
-numba
+colorama
