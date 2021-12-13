@@ -3,7 +3,7 @@ screen_resolution = [1366, 768]
 radius = 300
 num_lines = 200
 
-animation_speed = 0.0003
+animation_speed = 0.0003 # 0.0001
 
 fps = 60
 pulsing = False

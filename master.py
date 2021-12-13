@@ -65,6 +65,7 @@ class App:
 
     def run(self):
         volume = 0.5
+        pause = False
 
         while True:
             self.draw_main()
@@ -88,6 +89,13 @@ class App:
                             if volume != 0.0:
                                 volume -= 0.05
                             self.pg.mixer.music.set_volume(volume)
+                        if event.key == self.pg.K_SPACE:
+                            if pause:
+                                pause = False
+                                self.pg.mixer.music.unpause()
+                            else:
+                                pause = True
+                                self.pg.mixer.music.pause()
 
             self.clock.tick(self.settings.fps)
 
