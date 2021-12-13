@@ -1,9 +1,9 @@
 # System consts
 screen_resolution = [1366, 768]
-radius = 350
+radius = 300
 num_lines = 200
 
-animation_speed = 0.0001
+animation_speed = 0.0003
 
 fps = 60
 pulsing = False
@@ -13,10 +13,10 @@ mode = 'monocolor'
 
 background_color = 'black'
 
-monocolor_cardioid_color = 'red'
+monocolor_cardioid_color = 'green'
 
 multicolor_cardioid_color_1 = 'green'
 multicolor_cardioid_color_2 = 'black'
 
 # Music
-path_to_music = "./assets/music/main.mp3"
+path_to_music = None # "./assets/music/main.mp3"
