@@ -20,8 +20,9 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
+        git config --local user.name "githubVladimirT"
+        git config --local user.email "vladimir.tolstov@selfip.ru"
+        rm pylint.json
         pylint `ls -R|grep .py$|xargs` >> pylint.json
-        git add pylint.json
-        git commit -m "Update pylint.json"
+        git commit -am "Add pylint.json"
         git push
-        git rm pylint.json
