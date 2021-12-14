@@ -22,6 +22,7 @@ jobs:
       run: |
         git config --local user.name "githubVladimirT"
         git config --local user.email "vladimir.tolstov@selfip.ru"
+        git pull
         rm pylint.json
         pylint `ls -R|grep .py$|xargs` >> pylint.json
         git commit -am "Add pylint.json"
