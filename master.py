@@ -2,142 +2,202 @@
 
 # Created by: @githubVladimirT
 
-# Class: Cardioid drawing the cardioid on screen
+
+"""
+                                My github:
+                    https://github.com/githubVladimirT
+
+            You can distribute this project, but you must point me
+
+             This project was been created by githubVladimirT
+                    This is a main file of Cardioid
+            If you want edit settings, go to file settings.py
+"""
+
+
+__version__ = "24.0.0"
+__author__ = "githubVladimirT"
+
+
+with open("./master.log", "a", encoding="utf-8") as log:
+    try:
+        from os import environ
+        import pygame
+        import settings
+        import datetime
+        import math
+        from colorama import Fore
+        import sys
+
+    except ModuleNotFoundError:
+        error = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S" + " ; Error: ")
+        log.write("\n[  FAIL  ] datetime: " + error + "Module not found" + "  -  file: master.py")
+    except ImportError:
+        error = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S" + " ; Error: ")
+        log.write("\n[  FAIL  ] datetime: " + error + "Import Error" + "  -  file: master.py")
+
+
+"""
+    This class drawing the Cardioid on screen.
+"""
 class Cardioid:
-    def __init__(self, app, settings, pg, math):
+    # This is a constructor of main cardioid class
+    def __init__(self, app):
         self.app = app
-        self.settings = settings
-        self.pg = pg
-        self.math = math
-        self.radius = settings.radius
-        self.num_lines = settings.num_lines
+        self.radius = settings.RADIUS
+        self.num_lines = settings.NUM_LINES
         self.translate = self.app.screen.get_width() // 2, self.app.screen.get_height() // 2
-        if settings.mode == 'multicolor':
+        if settings.COLOR_MODE == 'multi':
             self.counter, self.inc = 0, 0.01
 
+    # This function per by getting color for multicolor mode
     def get_color(self):
         self.counter += self.inc
-        self.counter, self.inc = (self.counter, self.inc) if 0 < self.counter < 1 else (max(min(self.counter, 1), 0), -self.inc)
-        
-        return self.pg.Color(self.settings.multicolor_cardioid_color_1).lerp(self.settings.multicolor_cardioid_color_2, self.counter)
+        self.counter, self.inc = (self.counter, self.inc) \
+                                 if 0 < self.counter < 1 \
+                                 else (max(min(self.counter, 1), 0), -self.inc)
 
+        return pygame.Color(settings.MULTI_COLOR_1)\
+               .lerp(settings.MULTI_COLOR_2, self.counter)
+
+    # This function per by logic and drawing Cardioid
     def draw(self):
-        time = self.pg.time.get_ticks()
-        if self.settings.pulsing:
-            self.radius = 250 + 50 * abs(self.math.sin(time * 0.004) - 0.5)
+        time = pygame.time.get_ticks()
+        if settings.PULSING:
+            self.radius = 250 + 50 * abs(math.sin(time * 0.004) - 0.5)
 
-        factor = 1 + self.settings.animation_speed * time
+        factor = 1 + settings.ANIM_SPEED * time
 
         for i in range(self.num_lines):
-            theta = (2 * self.math.pi / self.num_lines) * i
-            x1 = int(self.radius * self.math.cos(theta)) + self.translate[0]
-            y1 = int(self.radius * self.math.sin(theta)) + self.translate[1]
+            theta = (2 * math.pi / self.num_lines) * i
+            axis_x1 = int(self.radius * math.cos(theta)) + self.translate[0]
+            axis_y1 = int(self.radius * math.sin(theta)) + self.translate[1]
 
-            x2 = int(self.radius * self.math.cos(factor * theta)) + self.translate[0]
-            y2 = int(self.radius * self.math.sin(factor * theta)) + self.translate[1]
+            axis_x2 = int(self.radius * math.cos(factor * theta)) + self.translate[0]
+            axis_y2 = int(self.radius * math.sin(factor * theta)) + self.translate[1]
 
-            if self.settings.mode == 'monocolor':
-                self.pg.draw.aaline(self.app.screen, self.settings.monocolor_cardioid_color, (x1, y1), (x2, y2))
-            elif self.settings.mode == 'multicolor':
-                self.pg.draw.aaline(self.app.screen, self.get_color(), (x1, y1), (x2, y2))
+            axis_1 = (axis_x1, axis_y1)
+            axis_2 = (axis_x2, axis_y2)
 
+            if settings.COLOR_MODE == 'mono':
+                pygame.draw.aaline(self.app.screen, settings.MONO_COLOR, axis_1, axis_2)
+            elif settings.COLOR_MODE == 'multi':
+                pygame.draw.aaline(self.app.screen, self.get_color(), axis_1, axis_2)
 
-# Class: App the main class of the program
+"""
+    This is a main class of this application.
+"""
 class App:
-    def __init__(self, pg, settings, log, now, math):
-        self.pg = pg
-        self.math = math
-        self.settings = settings
-        self.log = log
-        self.now = now
-        
-        self.screen = self.pg.display.set_mode(settings.screen_resolution, self.pg.FULLSCREEN)
-        self.clock = pg.time.Clock()
-        self.cardioid = Cardioid(self, self.settings, self.pg, self.math)
+    # This is a constructor of main app class
+    def __init__(self, logger):
+        self.logger = logger
+        self.now = datetime.datetime.now()
 
+        self.screen = pygame.display.set_mode(settings.SCREEN_RES, pygame.FULLSCREEN)
+        self.clock = pygame.time.Clock()
+        self.cardioid = Cardioid(self)
+
+    # This function per by drawing all components on the screen
     def draw_main(self):
-        self.screen.fill(self.settings.background_color)
-        self.pg.display.set_icon(self.pg.image.load("./assets/img/icon_min.png"))
+        self.screen.fill(settings.BG_COLOR)
+        pygame.display.set_icon(pygame.image.load("./assets/img/icon_min.png"))
 
         self.cardioid.draw()
-        self.pg.display.flip()
+        pygame.display.flip()
 
-
+    # This function of class App per by start app
     def run(self):
         volume = 0.5
+        run = True
         pause = False
 
-        while True:
-            self.draw_main()
-            for event in self.pg.event.get():
-                if event.type == self.pg.QUIT:
-                    self.log.write("\n[  OK  ] datetime: " + self.now.strftime("%Y-%m-%d %H:%M:%S") + "  -  file: master.py")
-                    exit(0)
-                if event.type == self.pg.KEYDOWN:
-                    if event.key == self.pg.K_ESCAPE:
-                        self.log.write("\n[  OK  ] datetime: " + self.now.strftime("%Y-%m-%d %H:%M:%S") + "  -  file: master.py")
-                        exit()
-                    
-                    if event.key == self.pg.K_q and self.pg.key.get_mods() & self.pg.KMOD_CTRL or event.key == self.pg.K_w and self.pg.key.get_mods() & self.pg.KMOD_CTRL:
-                        exit()
+        def status_ok(time):
+            return "[  OK  ] datetime: " + time + "  -  file: master.py"
 
-                    if self.settings.path_to_music != None:
-                        if event.key == self.pg.K_UP or event.key == self.pg.K_o:
+        while run:
+            self.draw_main()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    self.logger.write('\n' + status_ok(time))
+                    run = False
+                    sys.exit(0)
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        self.logger.write('\n' + status_ok(time))
+                        run = False
+                        sys.exit(0)
+
+                    if event.key == pygame.K_q and pygame.key.get_mods() & pygame.KMOD_CTRL:
+                        time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        self.logger.write('\n' + status_ok(time))
+                        run = False
+                        sys.exit(0)
+                    if event.key == pygame.K_w and pygame.key.get_mods() & pygame.KMOD_CTRL:
+                        time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        self.logger.write('\n' + status_ok(time))
+                        run = False
+                        sys.exit(0)
+
+                    if settings.MUSIC_PATH is not None:
+                        if event.key == pygame.K_UP or event.key == pygame.K_o:
                             volume += 0.05
-                            self.pg.mixer.music.set_volume(volume)
-                        if event.key == self.pg.K_DOWN or event.key == self.pg.K_k:
+                            pygame.mixer.music.set_volume(volume)
+                        if event.key == pygame.K_DOWN or event.key == pygame.K_k:
                             if volume != 0.0:
                                 volume -= 0.05
-                            self.pg.mixer.music.set_volume(volume)
-                        if event.key == self.pg.K_SPACE:
+                            pygame.mixer.music.set_volume(volume)
+                        if event.key == pygame.K_SPACE:
                             if pause:
                                 pause = False
-                                self.pg.mixer.music.unpause()
+                                pygame.mixer.music.unpause()
                             else:
                                 pause = True
-                                self.pg.mixer.music.pause()
+                                pygame.mixer.music.pause()
 
-            self.clock.tick(self.settings.fps)
+            self.clock.tick(settings.FPS)
+"""
+This function playing background music.
+"""
+def music(path):
+    pygame.mixer.init()
+    pygame.mixer.music.load(path)
+    pygame.mixer.music.play(-1)
 
-def music(settings, pg):
-    pg.mixer.init()
-    pg.mixer.music.load(settings.path_to_music)
-    pg.mixer.music.play(-1)
-
-
+"""
+This is a master function which starting main class: App.
+"""
 def master():
-    with open("./master.log", "a") as log:
+    with open("./master.log", 'a', encoding="utf-8") as logger:
         try:
-            from os import environ
             environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 
-            import pygame as pg
-            import settings
-            import datetime
-            import math
-
-            now = datetime.datetime.now()
-
-            if settings.path_to_music != None:
+            if settings.MUSIC_PATH is not None:
                 try:
-                    music(settings, pg)
-                except:
-                    from colorama import Fore
-                    log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + " ; Error: Music file not found.") + "  -  file: master.py")
-                    print(Fore.RED + "\nError! For details open file master.log\n" + Fore.RESET)
-                    exit(1)
+                    music(settings.MUSIC_PATH)
+                except Exception:
+                    time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    err = "\n[  FAIL  ] datetime: " + time + " ; Error: Music file not found."
 
-            app = App(pg, settings, log, now, math)
+                    logger.write(err + "  -  file: master.py")
+                    print(Fore.RED + "\nError! For details open file master.log\n" + Fore.RESET)
+
+                    sys.exit(1)
+
+            app = App(logger)
             app.run()
 
         except KeyboardInterrupt:
-            log.write("\n[  OK  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S") + "  -  file: master.py")
-        except ModuleNotFoundError:
-            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + " ; Error: Module not found") + "  -  file: master.py")
-        except ImportError:
-            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + " ; Error: Import Error") + "  -  file: master.py")
+            time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            status_ok = "[  OK  ] datetime: " + time + "  -  file: master.py"
+
+            logger.write('\n' + status_ok)
         except FileNotFoundError:
-            log.write("\n[  FAIL  ] datetime: " + now.strftime("%Y-%m-%d %H:%M:%S" + " ; Error: File not found. Maybe music file doesn't exist.") + "  -  file: master.py")
+            time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            err = "\n[  FAIL  ] datetime: " + time + " ; Error: File not found."
+
+            logger.write(err + " Maybe music file doesn't exist." + "  -  file: master.py")
 
 
 if __name__ == '__main__':

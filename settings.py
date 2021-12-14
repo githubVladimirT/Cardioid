@@ -1,22 +1,30 @@
+"""
+
+    This is a settings file of Cardioid.
+  You can edit (carefully) variable value.
+
+"""
+
+
 # System consts
-screen_resolution = [1366, 768]
-radius = 300
-num_lines = 200
+SCREEN_RES = [1366, 768]
+RADIUS = 300
+NUM_LINES = 200
 
-animation_speed = 0.0003 # 0.0001
+ANIM_SPEED = 0.0003 # 0.0001
 
-fps = 60
-pulsing = False
+FPS = 60
+PULSING = False
 
 # Colors
-mode = 'monocolor'
+COLOR_MODE = 'mono'
 
-background_color = 'black'
+BG_COLOR = 'black'
 
-monocolor_cardioid_color = 'green'
+MONO_COLOR = 'green'
 
-multicolor_cardioid_color_1 = 'green'
-multicolor_cardioid_color_2 = 'black'
+MULTI_COLOR_1 = 'green'
+MULTI_COLOR_2 = 'black'
 
 # Music
-path_to_music = None # "./assets/music/main.mp3"
+MUSIC_PATH = None # "./assets/music/main.mp3"
