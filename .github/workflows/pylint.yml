@@ -20,7 +20,8 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-        rm pylint.json
         pylint `ls -R|grep .py$|xargs` >> pylint.json
         git add pylint.json
         git commit -m "Update pylint.json"
+        git push
+        git rm pylint.json
