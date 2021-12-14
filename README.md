@@ -4,7 +4,7 @@
 
 ### 1. Install python (if you haven't already).
 
-### 2. Run this commands __(Don't start as sudo!)__:
+### 2. Run this commands (**Don't start as sudo!**):
 ``` bash
 # Check existence of command "gh". Because "gh clone" is faster then "git clone"
 if ! command -v gh &> /dev/null
