@@ -1,4 +1,2 @@
                     Cardioid logs:
-[  OK  ] datetime: 2022-04-02 19:06:48  -  file: master.py
-[  OK  ] datetime: 2022-04-03 09:39:38  -  file: master.py
-[  OK  ] datetime: 2022-04-03 09:41:12  -  file: master.py
+2022-04-03 10:21:48,798 - root - [  WARNING  ] - interrupted.  -  file: master.py

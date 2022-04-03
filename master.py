@@ -19,25 +19,21 @@ __version__ = "24.0.10"
 __author__ = "githubVladimirT"
 
 
-with open("./master.log", "a", encoding="utf-8") as log:
-    try:
-        from os import environ
-        import pygame
-        import datetime
-        import math
-        from colorama import Fore
-        import sys
-        import config_reader
+try:
+    from os import environ
+    import pygame
+    import math
+    import sys
+    import config_reader
+    import logging
 
-        global CONF
-        CONF = config_reader.read()
+    global CONF
+    CONF = config_reader.read()
 
-    except ModuleNotFoundError:
-        error = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S" + " ; Error: ")
-        log.write(f"\n[  FAIL  ] datetime: {error} Module not found" + "  -  file: master.py")
-    except ImportError:
-        error = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S" + " ; Error: ")
-        log.write(f"\n[  FAIL  ] datetime: {error} ImportError" + "  -  file: master.py")
+except ModuleNotFoundError:
+    logging.warning("error: moudle not found.  -  file: master.py")
+except ImportError:
+    logging.fatal("error: import error.  -  file: master.py")
 
 
 """
@@ -91,8 +87,7 @@ class Cardioid:
 """
 class App:
     # This is a constructor of main app class
-    def __init__(self, logger):
-        self.logger = logger
+    def __init__(self):
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         self.clock = pygame.time.Clock()
         self.cardioid = Cardioid(self)
@@ -111,32 +106,25 @@ class App:
         run = True
         pause = False
 
-        def status_ok(time):
-            return f"[  OK  ] datetime: {time}  -  file: master.py"
-
         while run:
             self.draw_main()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    self.logger.write('\n' + status_ok(time))
+                    logging.warning("interrupted.  -  file: master.py")
                     run = False
                     sys.exit(0)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                        self.logger.write('\n' + status_ok(time))
+                        logging.warning("interrupted.  -  file: master.py")
                         run = False
                         sys.exit(0)
 
                     if event.key == pygame.K_q and pygame.key.get_mods() & pygame.KMOD_CTRL:
-                        time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                        self.logger.write('\n' + status_ok(time))
+                        logging.warning("interrupted.  -  file: master.py")
                         run = False
                         sys.exit(0)
                     if event.key == pygame.K_w and pygame.key.get_mods() & pygame.KMOD_CTRL:
-                        time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                        self.logger.write('\n' + status_ok(time))
+                        logging.warning("interrupted.  -  file: master.py")
                         run = False
                         sys.exit(0)
 
@@ -169,36 +157,28 @@ def music(path):
 This is a master function which starting main class: App.
 """
 def master():
-    with open("./master.log", 'a', encoding="utf-8") as logger:
-        try:
-            environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
+    try:
+        environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 
-            if CONF["music_path"] is not None:
-                try:
-                    music(CONF["music_path"])
-                except Exception:
-                    time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    err = f"\n[  FAIL  ] datetime: {time} ; error: invalid music file or path."
+        if CONF["music_path"] is not None:
+            try:
+                music(CONF["music_path"])
+            except Exception:
+                logging.fatal("error: invalid music file or path.  -  file: master.py")
 
-                    logger.write(f"{err}  -  file: master.py")
-                    print(f"{Fore.RED}\nerror! For details open file master.log\n{Fore.RESET}")
+                sys.exit(1)
 
-                    sys.exit(1)
+        app = App()
+        app.run()
 
-            app = App(logger)
-            app.run()
-
-        except KeyboardInterrupt:
-            time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            status_ok = f"[  OK  ] datetime: {time}  -  file: master.py"
-
-            logger.write('\n' + status_ok)
-        except FileNotFoundError:
-            time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            err = f"\n[  FAIL  ] datetime: {time} ; Error: File not found."
-
-            logger.write(f"{err} Maybe music file doesn't exist.  -  file: master.py")
+    except KeyboardInterrupt:
+        logging.warning("interrupted.  -  file: master.py")
+    except FileNotFoundError:
+        logging.fatal("error: music file not found.  -  file: master.py")
 
 
 if __name__ == '__main__':
+    logging.basicConfig(filename='master.log',
+                        filemode='a',
+                        format='%(asctime)s - %(name)s - [  %(levelname)s  ] - %(message)s')
     master()
