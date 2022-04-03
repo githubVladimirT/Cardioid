@@ -7,7 +7,7 @@
 
 
 # System consts
-SCREEN_RES = [1366, 768]
+# SCREEN_RES = [1366, 768]
 RADIUS = 300
 NUM_LINES = 200
 
