@@ -6,21 +6,11 @@
 
 ### 2. Run this commands (<b>Don't start as sudo!</b>):
 ``` bash
-# Check existence of command "gh". Because "gh clone" is faster then "git clone"
-if ! command -v gh &> /dev/null
-then
-	git clone https://github.com/githubVladimirT/Cardioid.git # Clone repo
-	cd Cardioid # Change dirictory to cloned
-	pip3 install -r requirements.txt # Install or update modules
-	chmod +x master.py
-	./master.py # Run Cardioid
-else
-	gh repo clone githubVladimirT/Cardioid # Clone repo
-	cd Cardioid # Change dirictory to cloned
-	pip3 install -r requirements.txt # Install or update modules
-	chmod +x master.py
-	./master.py # Run Cardioid
-fi
+git clone https://github.com/githubVladimirT/Cardioid.git
+cd Cardioid
+pip3 install -r requirements.txt
+chmod +x master.py
+./master.py
 ```
 
 ### 3. If you want change settings edit consts if file [settings.py](https://github.com/githubVladimirT/Cardioid/blob/main/settings.py).
