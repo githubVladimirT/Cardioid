@@ -14,6 +14,8 @@ python master.py
 
 ### Or
 ```bash
+git clone https://github.com/githubVladimirT/Cardioid.git
+cd Cardioid
 make run
 ```
 
