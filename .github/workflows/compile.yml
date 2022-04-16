@@ -20,4 +20,4 @@ jobs:
         pip install pyinstaller
     - name: Compiling code with pyinstaller
       run: |
-        pyinstaller --onefile master.py
+        pyinstaller --onefile master.py --target-arch=universal2 -n cardioid_arch_universal --clean 
