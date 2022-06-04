@@ -23,9 +23,4 @@ make run
 
 ### *. For add the background music, add music file to folder assets/music/ then in file [config.cfg](https://github.com/githubVladimirT/Cardioid/blob/main/config.cfg), finally paste path to file in the const "music_path" after char equals.
 
-### *. For build, run:
-```bash
-make build
-```
-
-### For exit from app hit 'ESC' or 'Ctrl+w' or 'Ctrl+q' or 'Alt+F4'.
+### For exit from app hit 'ESC', 'Ctrl+w', 'Ctrl+q' or 'Alt+F4'.
