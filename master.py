@@ -15,7 +15,7 @@
 """
 
 
-__version__ = "24.0.10"
+__version__ = "1.0.65"
 __author__ = "githubVladimirT"
 
 
@@ -100,7 +100,7 @@ class App:
         self.cardioid.draw()
         pygame.display.flip()
 
-    # This function of class App per by start app
+    # This function per by start app
     def run(self):
         volume = 0.5
         run = True
@@ -146,7 +146,7 @@ class App:
 
             self.clock.tick(CONF["fps"])
 """
-This function playing background music.
+This function per by playing background music.
 """
 def music(path):
     pygame.mixer.init()
@@ -154,9 +154,9 @@ def music(path):
     pygame.mixer.music.play(-1)
 
 """
-This is a master function which starting main class: App.
+This function per by starting class App.
 """
-def master():
+def main():
     try:
         environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 
@@ -181,4 +181,4 @@ if __name__ == '__main__':
     logging.basicConfig(filename='master.log',
                         filemode='a',
                         format='%(asctime)s - %(name)s - [  %(levelname)s  ] - %(message)s')
-    master()
+    main()
