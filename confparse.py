@@ -1,6 +1,6 @@
 """Config file reader for master moudle"""
 import configparser
-
+import logging
 
 def read(file="config.cfg"):
     config = configparser.ConfigParser()
@@ -44,8 +44,12 @@ def read(file="config.cfg"):
 
 
 if __name__ == "__main__":
+    logging.basicConfig(filename='main.log',
+                        filemode='a',
+                        format='%(asctime)s - %(name)s - [  %(levelname)s  ] - %(message)s')
+
     try:
         if read() is not None:
             print(read())
     except Exception as err:
-        print(f"Error: {err}")
+        logging.fatal(f"error: {err}  -  file: config_reader.py")

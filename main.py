@@ -15,7 +15,7 @@
 """
 
 
-__version__ = "1.0.65"
+__version__ = "1.0.67"
 __author__ = "githubVladimirT"
 
 
@@ -24,16 +24,16 @@ try:
     import pygame
     import math
     import sys
-    import config_reader
     import logging
+    import confparse
 
     global CONF
-    CONF = config_reader.read()
+    CONF = confparse.read()
 
 except ModuleNotFoundError:
-    logging.warning("error: moudle not found.  -  file: master.py")
+    logging.warning("error: moudle not found.  -  file: main.py")
 except ImportError:
-    logging.fatal("error: import error.  -  file: master.py")
+    logging.fatal("error: import error.  -  file: main.py")
 
 
 """
@@ -110,21 +110,21 @@ class App:
             self.draw_main()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    logging.warning("interrupted.  -  file: master.py")
+                    logging.warning("interrupted.  -  file: main.py")
                     run = False
                     sys.exit(0)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        logging.warning("interrupted.  -  file: master.py")
+                        logging.warning("interrupted.  -  file: main.py")
                         run = False
                         sys.exit(0)
 
                     if event.key == pygame.K_q and pygame.key.get_mods() & pygame.KMOD_CTRL:
-                        logging.warning("interrupted.  -  file: master.py")
+                        logging.warning("interrupted.  -  file: main.py")
                         run = False
                         sys.exit(0)
                     if event.key == pygame.K_w and pygame.key.get_mods() & pygame.KMOD_CTRL:
-                        logging.warning("interrupted.  -  file: master.py")
+                        logging.warning("interrupted.  -  file: main.py")
                         run = False
                         sys.exit(0)
 
@@ -164,7 +164,7 @@ def main():
             try:
                 music(CONF["music_path"])
             except Exception:
-                logging.fatal("error: invalid music file or path.  -  file: master.py")
+                logging.fatal("error: invalid music file or path.  -  file: main.py")
 
                 sys.exit(1)
 
@@ -172,13 +172,13 @@ def main():
         app.run()
 
     except KeyboardInterrupt:
-        logging.warning("interrupted.  -  file: master.py")
+        logging.warning("interrupted.  -  file: main.py")
     except FileNotFoundError:
-        logging.fatal("error: music file not found.  -  file: master.py")
+        logging.fatal("error: music file not found.  -  file: main.py")
 
 
 if __name__ == '__main__':
-    logging.basicConfig(filename='master.log',
+    logging.basicConfig(filename='main.log',
                         filemode='a',
                         format='%(asctime)s - %(name)s - [  %(levelname)s  ] - %(message)s')
     main()
