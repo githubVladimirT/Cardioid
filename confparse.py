@@ -52,4 +52,4 @@ if __name__ == "__main__":
         if read() is not None:
             print(read())
     except Exception as err:
-        logging.fatal(f"error: {err}  -  file: config_reader.py")
+        logging.fatal("error: %s  -  file: config_reader.py", err)
