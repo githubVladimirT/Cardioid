@@ -16,7 +16,7 @@ python3 main.py
 ```bash
 git clone https://github.com/githubVladimirT/Cardioid.git
 cd Cardioid
-make run
+make setup run
 ```
 
 ### 3. If you want change settings edit file [config.cfg](https://github.com/githubVladimirT/Cardioid/blob/main/config.cfg).
