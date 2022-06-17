@@ -9,7 +9,7 @@
 git clone https://github.com/githubVladimirT/Cardioid.git
 cd Cardioid
 pip3 install -r requirements.txt
-python master.py
+python3 main.py
 ```
 
 ### Or
