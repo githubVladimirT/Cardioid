@@ -1,1 +1,7 @@
                     Cardioid logs:
+2022-07-01 14:18:22,559 - root - [  WARNING  ] - interrupted.  -  file:main.py
+2022-07-01 14:19:33,823 - root - [  WARNING  ] - interrupted.  -  file:main.py
+2022-07-01 14:19:46,347 - root - [  WARNING  ] - interrupted.  -  file:main.py
+2022-07-01 14:20:03,934 - root - [  WARNING  ] - interrupted.  -  file:main.py
+2022-07-01 14:20:13,247 - root - [  CRITICAL  ] - error: music file not found.  -  file:main.py
+2022-07-01 14:20:27,855 - root - [  WARNING  ] - interrupted.  -  file:main.py

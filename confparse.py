@@ -1,6 +1,7 @@
-"""Config file reader for master moudle"""
+"""Config file reader"""
 import configparser
 import logging
+import sys
 
 def read(file="config.cfg"):
     config = configparser.ConfigParser()
@@ -35,8 +36,8 @@ def read(file="config.cfg"):
     elif conf["pulsing"].lower() == "true":
         conf["pulsing"] = True
     else:
-        print("Error: unknow type")
-        return
+        logging.fatal("error: unknow type  -  file: config_reader.py")
+        return None
 
     # conf["screen_res"] = [int(n) for n in conf["screen_res"].split(', ')]
 
@@ -44,12 +45,21 @@ def read(file="config.cfg"):
 
 
 if __name__ == "__main__":
-    logging.basicConfig(filename='main.log',
-                        filemode='a',
-                        format='%(asctime)s - %(name)s - [  %(levelname)s  ] - %(message)s')
+    logging.basicConfig(
+        filename='main.log',
+        filemode='a',
+        format='%(asctime)s - %(name)s - [  %(levelname)s  ] - %(message)s'
+    )
+
+    if "--help" in sys.argv:
+        print("this moudle reading config file and outputting in python dict format")
+        sys.exit(0)
 
     try:
-        if read() is not None:
-            print(read())
+        parsed_config = read()
+
+        if parsed_config is not None:
+            print(parsed_config)
+
     except Exception as err:
-        logging.fatal("error: %s  -  file: config_reader.py", err)
+        logging.fatal("error: %s  -  file:config_reader.py", err)

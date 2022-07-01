@@ -7,33 +7,38 @@
                                 My github:
                     https://github.com/githubVladimirT
 
-            You can distribute this project, but you should point me
+                      You can distribute this project
 
-             This project was been created by githubVladimirT
-                    This is a main file of Cardioid
-            If you want edit settings, go to file config.cfg
+              This project was been created by githubVladimirT
+                     This is a main file of Cardioid
+              If you want edit settings, go to file config.cfg
 """
 
 
-__version__ = "1.0.69"
+__version__ = "1.1.0"
 __author__ = "githubVladimirT"
 
 
 try:
     from os import environ
-    import pygame
+    environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
+
     import math
     import sys
     import logging
     import confparse
+    import pygame
 
     global CONF
     CONF = confparse.read()
 
+    if CONF is None:
+        logging.fatal("error: confparse.read returned None.  -  file:main.py")
+
 except ModuleNotFoundError:
-    logging.warning("error: moudle not found.  -  file: main.py")
+    logging.fatal("error: moudle not found.  -  file:main.py")
 except ImportError:
-    logging.fatal("error: import error.  -  file: main.py")
+    logging.fatal("error: import error.  -  file:main.py")
 
 
 """
@@ -81,6 +86,8 @@ class Cardioid:
                 pygame.draw.aaline(self.app.screen, CONF["mono_color"], axis_1, axis_2)
             elif CONF["color_mode"] == 'multi':
                 pygame.draw.aaline(self.app.screen, self.get_color(), axis_1, axis_2)
+            else:
+                logging.fatal("error: unknow color mode.  -  file:main.py")
 
 """
     This is a main class of this application.
@@ -91,55 +98,64 @@ class App:
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         self.clock = pygame.time.Clock()
         self.cardioid = Cardioid(self)
+        self.is_running = True
 
     # This function per by drawing all components on the screen
     def draw_main(self):
         self.screen.fill(CONF["bg_color"])
-        pygame.display.set_icon(pygame.image.load("./assets/img/icon_min.png"))
+        pygame.display.set_icon(pygame.image.load("./assets/img/main.png"))
 
         self.cardioid.draw()
         pygame.display.flip()
 
+    def interrupted(self):
+        logging.warning("interrupted.  -  file:main.py")
+        self.is_running = False
+        sys.exit(0)
+
     # This function per by start app
     def run(self):
         volume = 0.5
-        run = True
         pause = False
 
-        while run:
+        while self.is_running:
             self.draw_main()
+
             for event in pygame.event.get():
+
                 if event.type == pygame.QUIT:
-                    logging.warning("interrupted.  -  file: main.py")
-                    run = False
-                    sys.exit(0)
+                    self.interrupted()
+
                 if event.type == pygame.KEYDOWN:
+
                     if event.key == pygame.K_ESCAPE:
-                        logging.warning("interrupted.  -  file: main.py")
-                        run = False
-                        sys.exit(0)
+                        self.interrupted()
 
                     if event.key == pygame.K_q and pygame.key.get_mods() & pygame.KMOD_CTRL:
-                        logging.warning("interrupted.  -  file: main.py")
-                        run = False
-                        sys.exit(0)
+                        self.interrupted()
+
                     if event.key == pygame.K_w and pygame.key.get_mods() & pygame.KMOD_CTRL:
-                        logging.warning("interrupted.  -  file: main.py")
-                        run = False
-                        sys.exit(0)
+                        self.interrupted()
 
                     if CONF["music_path"] is not None:
+
                         if event.key == pygame.K_UP or event.key == pygame.K_o:
                             volume += 0.05
                             pygame.mixer.music.set_volume(volume)
+
                         if event.key == pygame.K_DOWN or event.key == pygame.K_k:
+
                             if volume != 0.0:
                                 volume -= 0.05
+
                             pygame.mixer.music.set_volume(volume)
+
                         if event.key == pygame.K_SPACE:
+
                             if pause:
                                 pause = False
                                 pygame.mixer.music.unpause()
+
                             else:
                                 pause = True
                                 pygame.mixer.music.pause()
@@ -148,9 +164,9 @@ class App:
 """
 This function per by playing background music.
 """
-def music(path):
+def music(music_path):
     pygame.mixer.init()
-    pygame.mixer.music.load(path)
+    pygame.mixer.music.load(music_path)
     pygame.mixer.music.play(-1)
 
 """
@@ -158,13 +174,11 @@ This function per by starting class App.
 """
 def main():
     try:
-        environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
-
         if CONF["music_path"] is not None:
             try:
                 music(CONF["music_path"])
             except Exception:
-                logging.fatal("error: invalid music file or path.  -  file: main.py")
+                logging.fatal("error: invalid music file or path.  -  file:main.py")
 
                 sys.exit(1)
 
@@ -172,13 +186,16 @@ def main():
         app.run()
 
     except KeyboardInterrupt:
-        logging.warning("interrupted.  -  file: main.py")
+        logging.warning("interrupted.  -  file:main.py")
     except FileNotFoundError:
-        logging.fatal("error: music file not found.  -  file: main.py")
+        logging.fatal("error: music file not found.  -  file:main.py")
 
 
 if __name__ == '__main__':
-    logging.basicConfig(filename='main.log',
-                        filemode='a',
-                        format='%(asctime)s - %(name)s - [  %(levelname)s  ] - %(message)s')
+    logging.basicConfig(
+        filename='main.log',
+        filemode='a',
+        format='%(asctime)s - %(name)s - [  %(levelname)s  ] - %(message)s'
+    )
+
     main()

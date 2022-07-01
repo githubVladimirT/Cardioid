@@ -21,6 +21,6 @@ make setup run
 
 ### 3. If you want change settings, edit file [config.cfg](https://github.com/githubVladimirT/Cardioid/blob/main/config.cfg).
 
-### *. For add the background music, add music file to folder assets/music/ then in file [config.cfg](https://github.com/githubVladimirT/Cardioid/blob/main/config.cfg), finally paste path to file in the const "music_path" after char equals.
+### *. For add the background music, in file [config.cfg](https://github.com/githubVladimirT/Cardioid/blob/main/config.cfg) paste path to file in the const "music_path" after char equals.
 
 ### For exit from app hit 'ESC', 'Ctrl+w', 'Ctrl+q' or 'Alt+F4'.
