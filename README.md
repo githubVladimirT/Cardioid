@@ -19,6 +19,4 @@ python3 main.py
 
 ### 2. If you want change settings, edit file [config.cfg](https://github.com/githubVladimirT/Cardioid/blob/main/config.cfg).
 
-### *. For add the background music, in file [config.cfg](https://github.com/githubVladimirT/Cardioid/blob/main/config.cfg) paste path to file in the const "music_path" after char equals.
-
 ### For exit from app hit 'ESC', 'Ctrl+w', 'Ctrl+q' or 'Alt+F4'.
