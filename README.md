@@ -1,5 +1,7 @@
 # Cardioid
 
+![](/assets/img/icon.png)
+
 ## For run this application follow the instructions:
 
 ### 1. Run this commands:
@@ -17,6 +19,6 @@ pip3 install -r requirements.txt
 python3 main.py
 ```
 
-### 2. If you want change settings, edit file [config.cfg](https://github.com/githubVladimirT/Cardioid/blob/main/config.cfg).
+### 2. If you want change settings, edit file [config.cfg](/config.cfg).
 
 ### For exit from app hit 'ESC', 'Ctrl+w', 'Ctrl+q' or 'Alt+F4'.

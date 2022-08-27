@@ -1,6 +1,12 @@
 setup:
-	pip3 install -r requirements.txt
+	pip install -r requirements.txt
 
 run:
-	python3 main.py
+	python main.py
 
+push:
+	echo > main.log
+	git add .
+	git commit -s -m "update"
+	git push
+	

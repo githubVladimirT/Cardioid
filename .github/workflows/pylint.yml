@@ -16,7 +16,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        pip3 install pylint
+        pip install pylint
     - name: Pylint check project
       run: |
         pylint $(git ls-files '*.py') --disable=C
