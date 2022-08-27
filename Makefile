@@ -10,3 +10,5 @@ push:
 	git commit -s -m "update"
 	git push
 	
+pylint:
+	pylint `git ls-files '*.py'` --disable=C,W > pylint_stat.json

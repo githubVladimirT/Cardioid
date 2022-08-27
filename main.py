@@ -18,18 +18,16 @@
 __version__ = "1.2.0"
 __author__ = "githubVladimirT"
 
-
 try:
     from os import environ
     environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
-
+    
     import math
     import sys
     import logging
     import confparse
     import pygame
 
-    global CONF
     CONF = confparse.read()
 
     if CONF is None:
@@ -40,19 +38,26 @@ except ModuleNotFoundError:
 except ImportError:
     logging.fatal("error: import error.  -  file:main.py")
 
+logging.basicConfig(
+    filename='main.log',
+    filemode='a',
+    format='%(asctime)s - %(name)s - [  %(levelname)s  ] - %(message)s'
+)
+
 
 """
     This class drawing the Cardioid on screen.
 """
 class Cardioid:
     # Constructor of main cardioid class
-    def __init__(self, app):
+    def __init__(self, app, CONF):
+        self.CONF = CONF
         self.app = app
-        self.radius = CONF["radius"]
-        self.num_lines = CONF["num_lines"]
+        self.radius = self.CONF["radius"]
+        self.num_lines = self.CONF["num_lines"]
         self.translate = self.app.screen.get_width() // 2, self.app.screen.get_height() // 2
 
-        if CONF["color_mode"] == "multi":
+        if self.CONF["color_mode"] == "multi":
             self.counter, self.inc = 0, 0.01
 
     # Get color for multicolor mode
@@ -62,16 +67,16 @@ class Cardioid:
                                   if 0 < self.counter < 1 \
                                   else (max(min(self.counter, 1), 0), -self.inc)
 
-        return pygame.Color(CONF["multi_color_1"])\
-               .lerp(CONF["multi_color_2"], self.counter)
+        return pygame.Color(self.CONF["multi_color_1"])\
+               .lerp(self.CONF["multi_color_2"], self.counter)
 
     # Cardioid logic and drawing
     def draw(self):
         time = pygame.time.get_ticks()
-        if CONF["pulsing"]:
+        if self.CONF["pulsing"]:
             self.radius = 250 + 50 * abs(math.sin(time * 0.004) - 0.5)
 
-        factor = 1 + CONF["anim_speed"] * time
+        factor = 1 + self.CONF["anim_speed"] * time
 
         for i in range(self.num_lines):
             theta = (2 * math.pi / self.num_lines) * i
@@ -82,9 +87,9 @@ class Cardioid:
             axis_1 = (axis_x1, axis_y1)
             axis_2 = (axis_x2, axis_y2)
 
-            if CONF["color_mode"] == 'mono':
-                pygame.draw.aaline(self.app.screen, CONF["mono_color"], axis_1, axis_2)
-            elif CONF["color_mode"] == 'multi':
+            if self.CONF["color_mode"] == 'mono':
+                pygame.draw.aaline(self.app.screen, self.CONF["mono_color"], axis_1, axis_2)
+            elif self.CONF["color_mode"] == 'multi':
                 pygame.draw.aaline(self.app.screen, self.get_color(), axis_1, axis_2)
             else:
                 logging.fatal("error: unknow color mode.  -  file:main.py")
@@ -94,15 +99,16 @@ class Cardioid:
 """
 class App:
     # Constructor of main app class
-    def __init__(self):
+    def __init__(self, CONF):
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         self.clock = pygame.time.Clock()
-        self.cardioid = Cardioid(self)
+        self.cardioid = Cardioid(self, CONF)
         self.is_running = True
+        self.CONF = CONF
 
     # Drawing all components on the screen
     def draw_main(self):
-        self.screen.fill(CONF["bg_color"])
+        self.screen.fill(self.CONF["bg_color"])
         pygame.display.set_icon(pygame.image.load("./assets/img/main.png"))
 
         self.cardioid.draw()
@@ -134,20 +140,14 @@ class App:
                     if event.key == pygame.K_w and pygame.key.get_mods() & pygame.KMOD_CTRL:
                         self.interrupted()
 
-            self.clock.tick(CONF["fps"])
+            self.clock.tick(self.CONF["fps"])
 
 """
 Start App class.
 """
 def main():
-    logging.basicConfig(
-        filename='main.log',
-        filemode='a',
-        format='%(asctime)s - %(name)s - [  %(levelname)s  ] - %(message)s'
-    )
-
     try:
-        app = App()
+        app = App(CONF)
         app.run()
 
     except KeyboardInterrupt:
@@ -156,3 +156,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
