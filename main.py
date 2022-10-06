@@ -45,11 +45,7 @@ logging.basicConfig(
 )
 
 
-"""
-    This class drawing the Cardioid on screen.
-"""
 class Cardioid:
-    # Constructor of main cardioid class
     def __init__(self, app, CONF):
         self.CONF = CONF
         self.app = app
@@ -60,7 +56,6 @@ class Cardioid:
         if self.CONF["color_mode"] == "multi":
             self.counter, self.inc = 0, 0.01
 
-    # Get color for multicolor mode
     def get_color(self):
         self.counter += self.inc
         self.counter, self.inc = (self.counter, self.inc) \
@@ -70,7 +65,6 @@ class Cardioid:
         return pygame.Color(self.CONF["multi_color_1"])\
                .lerp(self.CONF["multi_color_2"], self.counter)
 
-    # Cardioid logic and drawing
     def draw(self):
         time = pygame.time.get_ticks()
         if self.CONF["pulsing"]:
@@ -94,11 +88,8 @@ class Cardioid:
             else:
                 logging.fatal("error: unknow color mode.  -  file:main.py")
 
-"""
-    This is a main class of this application.
-"""
+
 class App:
-    # Constructor of main app class
     def __init__(self, CONF):
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         self.clock = pygame.time.Clock()
@@ -106,10 +97,8 @@ class App:
         self.is_running = True
         self.CONF = CONF
 
-    # Drawing all components on the screen
     def draw_main(self):
         self.screen.fill(self.CONF["bg_color"])
-        pygame.display.set_icon(pygame.image.load("./assets/img/main.png"))
 
         self.cardioid.draw()
         pygame.display.flip()
@@ -118,8 +107,7 @@ class App:
         logging.warning("interrupted.  -  file:main.py")
         self.is_running = False
         sys.exit(0)
-
-    # Start app
+    
     def run(self):
         while self.is_running:
             self.draw_main()
@@ -142,9 +130,7 @@ class App:
 
             self.clock.tick(self.CONF["fps"])
 
-"""
-Start App class.
-"""
+
 def main():
     try:
         app = App(CONF)
