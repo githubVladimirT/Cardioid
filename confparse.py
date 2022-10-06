@@ -3,10 +3,16 @@ import configparser
 import logging
 import sys
 
-def read(file="config.cfg"):
+def read(file="config.cfg", path=None):
+    if path:
+        if path[-1] == '/':
+            file = f"{path}{file}"
+        else:
+            file = f"{path}/{file}"
+
     config = configparser.ConfigParser()
 
-    config.read(file)
+    config.read(f"{file}")
 
     conf = {
         # SYSTEM

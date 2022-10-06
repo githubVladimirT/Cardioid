@@ -28,18 +28,28 @@ try:
     import confparse
     import pygame
 
-    CONF = confparse.read()
+    try:
+        path = sys.argv[1]
+    except IndexError:
+        path = None
+
+    CONF = confparse.read(path=path)
 
     if CONF is None:
         logging.fatal("error: confparse.read returned None.  -  file:main.py")
 
 except ModuleNotFoundError:
     logging.fatal("error: moudle not found.  -  file:main.py")
+    sys.exit(1)
 except ImportError:
     logging.fatal("error: import error.  -  file:main.py")
+    sys.exit(1)
+except KeyError:
+    logging.fatal("error: confparse.read returned KeyError.  -  file:main.py")
+    sys.exit(1)
 
 logging.basicConfig(
-    filename='main.log',
+    filename= f'{path}/main.log' if path else './main.log',
     filemode='a',
     format='%(asctime)s - %(name)s - [  %(levelname)s  ] - %(message)s'
 )
